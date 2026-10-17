@@ -1,0 +1,5 @@
+exclude:
+  - _content
+  - _scripts
+  - _tests
+  - ADSENSE-REVIEW.md
