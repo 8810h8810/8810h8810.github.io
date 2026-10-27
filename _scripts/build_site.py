@@ -21,6 +21,10 @@ REDIRECTS = {
 }
 
 def shell(title, description, route, body):
+    crumbs = '<a href="/">トップ</a>'
+    if route.startswith('/guide/') and route != '/guide/':
+        crumbs += ' / <a href="/guide/">使い方・ガイド</a>'
+    crumbs += ' / ' + escape(title)
     return f'''<!doctype html>
 <html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{escape(title)}｜犬と猫の暮らしの道具箱</title>
@@ -28,7 +32,7 @@ def shell(title, description, route, body):
 <meta name="google-adsense-account" content="ca-pub-9642638629259048">
 <link rel="canonical" href="{ORIGIN}{route}"><link rel="stylesheet" href="/site.css"></head>
 <body><a class="skip" href="#main">本文へ</a><header class="site-header"><a class="brand" href="/">犬と猫の暮らしの道具箱</a><nav class="site-nav" aria-label="サイト内"><a href="/guide/">使い方・ガイド</a><a href="/about/">運営について</a><a href="/contact/">困ったとき</a></nav></header>
-<main id="main" class="wrap"><p class="crumbs"><a href="/">トップ</a> / <a href="/guide/">使い方・ガイド</a></p><article class="card"><h1>{escape(title)}</h1><p class="meta">運営・制作：HYT JPN / 私とチャップ。　内容確認：<time datetime="2026-10-17">2026年10月17日</time></p>
+<main id="main" class="wrap"><p class="crumbs">{crumbs}</p><article class="card"><h1>{escape(title)}</h1><p class="meta">運営・制作：HYT JPN / 私とチャップ。　内容確認：<time datetime="2026-10-17">2026年10月17日</time></p>
 {body}
 </article></main><footer class="site-footer"><nav aria-label="フッター"><a href="/">トップ</a><a href="/guide/">ガイド一覧</a><a href="/about/">運営・編集方針</a><a href="/contact/">お問い合わせ・不具合報告</a><a href="/privacy/">プライバシー</a></nav><p>家庭のお世話を確認するための情報と道具です。診断・治療を提供するものではありません。</p></footer></body></html>
 '''
