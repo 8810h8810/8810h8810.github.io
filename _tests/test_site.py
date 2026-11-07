@@ -116,4 +116,20 @@ class Site(unittest.TestCase):
         config=(ROOT/'_config.yml').read_text()
         for name in ['_content','_scripts','_tests','ADSENSE-REVIEW.md']:self.assertIn(name,config)
 
+    def test_poop_guide_matches_current_storage_and_sharing_guidance(self):
+        html=pages['guide/poop-log/index.html']
+        for fact in ['排便したこと・日時','気になる様子','うんちの記録',
+                     'バックアップ・機種変更時の復元は未対応',
+                     'あなたの記録や写真は共有されません',
+                     '記録や写真をサーバーへ送信したり、家族へ共有したりする機能はありません',
+                     '2026年11月7日','id="storage"']:
+            self.assertIn(fact,html)
+        self.assertNotIn('別端末で同じ記録が見えるかは',html)
+
+    def test_scoped_update_does_not_refresh_unchecked_page_dates(self):
+        for slug in builder.GUIDES:
+            html=pages[f'guide/{slug}/index.html']
+            self.assertIn('<time datetime="2026-10-17">',html)
+            if slug!='poop-log':self.assertNotIn('2026年11月7日',html)
+
 if __name__=='__main__':unittest.main(verbosity=2)
