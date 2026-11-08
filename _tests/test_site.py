@@ -44,6 +44,9 @@ class Site(unittest.TestCase):
                 if url.netloc and url.netloc!='8810h8810.github.io':continue
                 if url.scheme not in ['', 'https']:continue
                 if url.path.startswith('/pet-meal-check/'):continue # Separate existing app, not copied or changed.
+                if url.path.startswith('/assets/guides/'):
+                    self.assertTrue((ROOT/url.path.lstrip('/')).is_file(),(name,link))
+                    continue
                 if url.path:
                     target=unquote(url.path.lstrip('/'))
                     if target.endswith('/') or not target:target+='index.html'
@@ -130,6 +133,7 @@ class Site(unittest.TestCase):
         for slug in builder.GUIDES:
             html=pages[f'guide/{slug}/index.html']
             self.assertIn('<time datetime="2026-10-17">',html)
-            if slug!='poop-log':self.assertNotIn('2026年11月7日',html)
+            # Screenshot capture dates are distinct from the unchanged page-review date.
+            self.assertEqual(html.count('内容確認：<time datetime="2026-10-17">'), 1)
 
 if __name__=='__main__':unittest.main(verbosity=2)
